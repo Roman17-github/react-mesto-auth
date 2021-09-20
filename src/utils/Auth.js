@@ -23,13 +23,6 @@ export const authorize = (email, password) => {
     .then((res) => {
       return res.ok ? res.json() : Promise.reject(`Ошибка ${res.status}`);
     })
-    .then((data) => {
-      if (data.token) {
-        localStorage.setItem("jwt", data.token);
-
-        return data;
-      }
-    })
     .catch((err) => console.log(err));
 };
 

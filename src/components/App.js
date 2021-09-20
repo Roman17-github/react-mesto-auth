@@ -168,16 +168,7 @@ function App() {
       <currentUserContext.Provider value={currentUser}>
         <Header loggedIn={loggedIn} email={email} />
         <Switch>
-          <Route path="/sign-up">
-            <Register
-              handlePopupStatus={setPopupStatusOpen}
-              setSucces={setSucces}
-            />
-          </Route>
-          <Route path="/sign-in">
-            <Login setLoggedIn={setLoggedIn} />
-          </Route>
-          <ProtectedRoute
+        <ProtectedRoute
             exact
             path="/"
             component={Main}
@@ -190,6 +181,15 @@ function App() {
             onCardDelete={handleCardDelete}
             loggedIn={loggedIn}
           ></ProtectedRoute>
+          <Route path="/sign-up">
+            <Register
+              handlePopupStatus={setPopupStatusOpen}
+              setSucces={setSucces}
+            />
+          </Route>
+          <Route path="/sign-in">
+            <Login setLoggedIn={setLoggedIn} />
+          </Route>
         </Switch>
         <EditProfilePopup
           isOpen={isEditProfilePopupOpen}
