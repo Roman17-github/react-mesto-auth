@@ -13,13 +13,14 @@ export default function AddPlacePopup (props) {
           name:name,
           link:link
         });
-        e.target.reset();
+        setName("");
+        setLink("");
       } 
 
       function clearForm() {
         props.onClose()
         setName("");
-        setLink("")
+        setLink("");
       }
 
 

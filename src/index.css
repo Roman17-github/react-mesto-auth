@@ -55,3 +55,4 @@
 @import url(./blocks/popup/__status/popup__status.css);
 @import url(./blocks/header/__email/header__email.css);
 @import url(./blocks/header/__profile/header__profile.css);
+@import url(./blocks/popup/__status/_opened/popup__status_opened.css);

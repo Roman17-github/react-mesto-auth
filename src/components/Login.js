@@ -1,6 +1,5 @@
 import React from "react";
 import { withRouter } from "react-router-dom";
-import * as auth from "../utils/Auth.js";
 
 class Login extends React.Component {
   constructor(props) {
@@ -22,19 +21,7 @@ class Login extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-
-    auth
-      .authorize(this.state.email, this.state.password)
-      .then((data) => {
-        if (data.token) {
-          this.setState({ email: "", password: "" }, () => {
-            localStorage.setItem("jwt", data.token);
-            this.props.history.push("/");
-            this.props.setLoggedIn(true);
-          });
-        }
-      })
-      .catch((err) => console.log(err));
+    this.props.handleSubmitAuth(this.state.email, this.state.password);
   };
 
   render() {

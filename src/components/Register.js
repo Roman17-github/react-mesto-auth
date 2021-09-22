@@ -1,8 +1,7 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
-import * as auth from "../utils/Auth.js";
 
- class Register extends React.Component {
+class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -22,13 +21,7 @@ import * as auth from "../utils/Auth.js";
 
   handleSubmit = (e) => {
     e.preventDefault();
-    auth.register(this.state.email, this.state.password).then((res) => {
-      res.ok ? this.props.setSucces(true) : this.props.setSucces(false);
-      this.props.handlePopupStatus(true);
-      this.props.history.push('/sign-in');
-    })
-    .catch((err) => console.log(err));
-    
+    this.props.handleSubmitRegister(this.state.email, this.state.password);
   };
 
   render() {
@@ -55,7 +48,7 @@ import * as auth from "../utils/Auth.js";
           onChange={this.handleChange}
           required
         />
-        <button type="submit" className="submit" >
+        <button type="submit" className="submit">
           Зарегистрироваться
         </button>
         <div className="register__signin">

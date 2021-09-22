@@ -4,7 +4,7 @@ import reg_failed from "../images/reg=failed.svg";
 
 export default function InfoTooltip({isOpen,onClose,isSucces}) {
     return(
-        <div className={`popup  ${isOpen ? "popup_opened" : ""}`}>
+        <div className={`popup  ${isOpen ? "popup__status_opened" : ""}`}>
             <div className="popup__container">
               <img
                 src={isSucces ? reg_ok : reg_failed}

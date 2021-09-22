@@ -9,7 +9,7 @@ import AddPlacePopup from "./AddPlacePopup";
 import ImagePopup from "./ImagePopup.js";
 import React from "react";
 import api from "../utils/Api.js";
-import { currentUserContext } from "../contexts/CurrentUserContext";
+import CurrentUserContext from "../contexts/CurrentUserContext.js";
 import { Route, Switch, useHistory } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 import Register from "./Register";
@@ -143,12 +143,16 @@ function App() {
           console.log(err);
         });
     }
-  }, [history]);
+  }, [loggedIn, history]);
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
     api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards(cards.map((c) => (c._id === card._id ? newCard : c)));
+      setCards(cards.map((c) => (c._id === card._id ? newCard : c))).catch(
+        (err) => {
+          console.log(err);
+        }
+      );
     });
   }
 
@@ -156,19 +160,43 @@ function App() {
     api
       .deleteCard(card._id)
       .then(() => {
-        setCards(cards.filter((c) => c._id !== card._id));
+        setCards((state) => state.filter((c) => c._id !== card._id));
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
+  function handleSubmitAuth(email, password) {
+    auth
+      .authorize(email, password)
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem("jwt", data.token);
+          setLoggedIn(true);
+          history.push("/");
+        }
+      })
+      .catch((err) => console.log(err));
+  }
+
+  function handleSubmitRegister(email, password) {
+    auth
+      .register(email, password)
+      .then((res) => {
+        res.ok ? setSucces(true) : setSucces(false);
+        setPopupStatusOpen(true);
+        history.push("/sign-in");
+      })
+      .catch((err) => console.log(err));
+  }
+
   return (
     <div className="body">
-      <currentUserContext.Provider value={currentUser}>
+      <CurrentUserContext.Provider value={currentUser}>
         <Header loggedIn={loggedIn} email={email} />
         <Switch>
-        <ProtectedRoute
+          <ProtectedRoute
             exact
             path="/"
             component={Main}
@@ -182,13 +210,10 @@ function App() {
             loggedIn={loggedIn}
           ></ProtectedRoute>
           <Route path="/sign-up">
-            <Register
-              handlePopupStatus={setPopupStatusOpen}
-              setSucces={setSucces}
-            />
+            <Register handleSubmitRegister={handleSubmitRegister} />
           </Route>
           <Route path="/sign-in">
-            <Login setLoggedIn={setLoggedIn} />
+            <Login handleSubmitAuth={handleSubmitAuth} />
           </Route>
         </Switch>
         <EditProfilePopup
@@ -226,7 +251,7 @@ function App() {
         />
 
         <Footer />
-      </currentUserContext.Provider>
+      </CurrentUserContext.Provider>
     </div>
   );
 }

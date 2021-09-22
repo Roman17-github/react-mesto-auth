@@ -1,5 +1,5 @@
 import React from "react";
-import {currentUserContext} from '../contexts/CurrentUserContext';
+import CurrentUserContext from '../contexts/CurrentUserContext';
 
 export default function Card(props) {
     
@@ -15,7 +15,7 @@ export default function Card(props) {
        props.onCardDelete(props)
     }
     
-    const currentUser = React.useContext(currentUserContext);
+    const currentUser = React.useContext(CurrentUserContext);
     const isOwn = props.userId === currentUser._id;
     const cardDeleteButtonClassName = (
       `element__delete ${isOwn ? '' : ' element__delete_hidden'}`
