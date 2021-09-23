@@ -147,13 +147,14 @@ function App() {
 
   function handleCardLike(card) {
     const isLiked = card.likes.some((i) => i._id === currentUser._id);
-    api.changeLikeCardStatus(card._id, !isLiked).then((newCard) => {
-      setCards(cards.map((c) => (c._id === card._id ? newCard : c))).catch(
-        (err) => {
-          console.log(err);
-        }
-      );
-    });
+    api
+      .changeLikeCardStatus(card._id, !isLiked)
+      .then((newCard) => {
+        setCards(cards.map((c) => (c._id === card._id ? newCard : c)));
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   function handleCardDelete(card) {
@@ -183,12 +184,15 @@ function App() {
   function handleSubmitRegister(email, password) {
     auth
       .register(email, password)
-      .then((res) => {
-        res.ok ? setSucces(true) : setSucces(false);
+      .then(() => {
+        setSucces(true);
         setPopupStatusOpen(true);
         history.push("/sign-in");
       })
-      .catch((err) => console.log(err));
+      .catch(() => {
+        setSucces(false);
+        setPopupStatusOpen(true);
+      });
   }
 
   return (
